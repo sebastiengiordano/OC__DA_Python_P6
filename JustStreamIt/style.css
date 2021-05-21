@@ -1,0 +1,151 @@
+/* Custom fonts */
+
+@font-face
+{
+    font-family: 'BallparkWeiner';
+    src: url('font/ballpark.eot');
+    src: url('font/ballpark.eot?#iefix') format('embedded-opentype'),
+         url('font/ballpark.woff') format('woff'),
+         url('font/ballpark.ttf') format('truetype'),
+         url('font/ballpark.svg#BallparkWeiner') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'Dayrom';
+    src: url('font/dayrom.eot');
+    src: url('font/dayrom.eot?#iefix') format('embedded-opentype'),
+         url('font/dayrom.woff') format('woff'),
+         url('font/dayrom.ttf') format('truetype'),
+         url('font/dayrom.svg#Dayrom') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'Kaushan';
+    src: url('font/KaushanScript-Regular.otf') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-size: x-large;
+}
+
+/********/
+/* Body */
+/********/
+
+body
+{
+    background: url('images/purple_background.jpg');
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    color: bisque;
+}
+
+#bloc_page
+{
+    width: 95%;
+    margin: auto;
+}
+
+
+/**********/
+/* Header */
+/**********/
+
+header
+{
+    font-family: Dayrom, serif;
+    background: url('images/separateur.png') repeat-x bottom;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    color:bisque;
+}
+
+#logo
+{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#logo img
+{
+    width: 50px;
+    height: 40px;
+}
+
+
+/**************/
+/* Navigation */
+/**************/
+
+nav ul
+{
+    list-style-type: none;
+    display: flex;
+}
+
+nav li
+{
+    margin-right: 15px;
+}
+
+nav a
+{
+    font-size: 1.3em;
+    color:bisque;
+    padding-bottom: 3px;
+    text-decoration: none;
+}
+
+nav a:hover
+{
+    color: #760001;
+    border-bottom: 3px solid #760001;
+}
+
+
+/************/
+/* Category */
+/************/
+
+#best_movie
+{
+    display: flex;
+    margin-top: 15px;
+    height: 200px;
+    border-radius: 5px;
+    background: url('images/sanfrancisco.jpg') no-repeat;
+    position: relative;
+    box-shadow: 0px 4px 4px #1c1a19;
+    margin-bottom: 25px;
+}
+
+#best_rating
+{
+    position: absolute;
+    bottom: 0;
+    border-radius: 0px 0px 5px 5px;
+    width: 99.5%;
+    height: 33px;
+    padding-top: 15px;
+    padding-left: 4px;
+    background-color: rgba(24,24,24,0.8);
+    color: white;
+    font-size: 0.8em;
+    
+}
+
+
+/* Footer */
+
+footer
+{
+    display: flex;
+    background:  url('images/separateur.png') repeat-x top, url('images/ombre.png') repeat-x top;
+    padding-top: 25px;
+}
