@@ -49,32 +49,54 @@ for (filter of categories_filter){
 }
 
 // Send request for all the categories
-for (r of requets_list){
-    data_json = r();
-    console.log('// Send request for all the categories');
-    console.log(data_json);
-    console.log(`${data_json.results}`);
-}
+// for (r of requets_list){
+//     data_json = r();
+//     console.log('// Send request for all the categories');
+//     console.log(data_json);
+//     console.log(`${data_json.results}`);
+// }
 
 
-Promise.all(requets_list)
-    .then(responses => {
-        // all responses are resolved successfully
-        for(let response of responses) {
-            console.log('')
-            console.log(`Promise.all - all resposnes - ${response.url}: ${response.status}`); // shows 200 for every url
-        }
-        return responses
-    })
-    .then(responses =>{
-        for(let response of responses) {
-            response = response.json()
-            console.log(`${response.url}: ${response.imdb_score}`); // shows 200 for every url
-        }
-    })
+// Promise.all(requets_list)
+//     .then(responses => {
+//         // all responses are resolved successfully
+//         for(let response of responses) {
+//             console.log('')
+//             console.log(`Promise.all - all resposnes - ${response.url}: ${response.status}`); // shows 200 for every url
+//         }
+//         return responses
+//     })
+//     .then(responses =>{
+//         for(let response of responses) {
+//             response = response.json()
+//             console.log(`${response.url}: ${response.imdb_score}`); // shows 200 for every url
+//         }
+//     })
 
 // <!-- Best Movie -->
-
+function best_movie_sequence(){
+    url = fetch_server_filter(...categories_filter[0])
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                console.log('')
+                console.log('function get: response OK')
+                console.log(`${response.url}: ${response.status}`); // shows 200 for every url
+                return response.json();
+            }
+            else{
+            console.error('Retour du serveur :', response.status);
+            retry_counter -= 1;
+            if (retry_counter > 0){
+                get(url, retry_counter);
+                }
+            }
+        })
+        .catch(function(error){
+            console.log('')
+            console.log('function fetch_server_filter: catch error')
+            console.log(error)
+        })}
 
 // <!-- Best rating -->
 

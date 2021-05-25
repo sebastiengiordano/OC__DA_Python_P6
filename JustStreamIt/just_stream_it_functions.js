@@ -58,13 +58,15 @@ function fetch_server_filter(...filter){
     }
 
     // Try to get response
-    return get(url);
+    return url;
 }
 
 function get(url, retry_counter=10){
     fetch(url)
         .then(function (response) {
             if (response.ok) {
+                console.log('')
+                console.log('function get: response OK')
                 console.log(`${response.url}: ${response.status}`); // shows 200 for every url
                 return response.json();
             }
@@ -76,12 +78,16 @@ function get(url, retry_counter=10){
                 }
             }
         })
-        .then(function (json_data) {
-            console.log('function get:')
-            console.log(json_data)
-            return json_data;
-        })
+        // .then(function (json_data) {
+        //     console.log('')
+        //     console.log('function get: return json_data')
+        //     console.log(json_data)
+        //     data = new Promise(function(json_data){return json_data})
+        //     return data;
+        // })
         .catch(function(error){
+            console.log('')
+            console.log('function get: catch error')
             console.log(error)
             retry_counter -= 1;
             if (retry_counter > 0){
