@@ -46,7 +46,7 @@
 body
 {
     background: url('images/purple_background.jpg');
-    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: bisque;
     min-height: 100vh;
 }
@@ -61,6 +61,15 @@ body
     /* Equal to height of footer */
     margin-bottom: -50px;
 
+}
+
+h1
+{
+    display: flex;
+    font-size: 4em;
+    font-family: Dayrom, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -129,15 +138,53 @@ nav a:hover
 #best_movie
 {
     display: flex;
-    padding-top: 15px;
-    padding-bottom: 15px;
     height: fit-content;
     justify-content: center; /* align horizontal */
     align-items: center; /* align vertical */
 }
 
+.best_movie_title
+{
+    font-size: 5em;
+    padding-right: 10%;
+    padding-bottom: 10%;
+    align-items: center;
+    justify-content: center;
+}
+
+.play_button
+{
+    /* height: 25px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px; */
+    background-image: linear-gradient(to bottom right, red, rgb(200, 100, 100));
+    /* background: url('images/fond_degraderouge.png') repeat-x; */
+    display:inline-block;
+    padding:0.3em 1.2em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:2em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-size: 60%;
+    color:bisque;
+    text-align:center;
+    transition: all 2s;
+    }
+.play_button:hover{
+    background-image: linear-gradient(to bottom right, white,bisque);
+    color: red;
+}
+
 #best_rating
 {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: -12px 0 0 -12px;
+    width: calc(100% + 12px);
+    padding-left: 15px;
+    padding-right: 15px;
     position: relative;
     width: 99.5%;
     min-height: 200px;
@@ -156,6 +203,6 @@ footer
     background:  url('images/separateur.png') repeat-x top, url('images/ombre.png') repeat-x top;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    min-width: 100%;
     height: 50px;
 }

@@ -9,7 +9,12 @@ const style_2 = document.getElementById('style_2');
 const style_3 = document.getElementById('style_3');
 
 // Defined all categories filter
-let categories_filter = [["sort_by=-imdb_score"], ["year=1977"]];
+let categories_filter = [
+    ["sort_by=-imdb_score"],
+    ["year=1977", "sort_by=-imdb_score"],
+    ['genre=Fantasy', "sort_by=-imdb_score"],
+    ['director=Christopher+Nolan'],
+];
 
 
 // min_year=
@@ -75,42 +80,86 @@ for (filter of categories_filter){
 //     })
 
 // <!-- Best Movie -->
-function best_movie_step1(){
+function best_movie_step(){
     url = fetch_server_filter(...categories_filter[0])
     fetch(url)
         .then(function (response) {
             if (response.ok) {
                 console.log('')
-                console.log('function best_movie_step1: response OK')
+                console.log('function best_movie_step: response OK')
                 return response.json();
             }
             else{
             console.error('Retour du serveur :', response.status);
             retry_counter -= 1;
             if (retry_counter > 0){
-                setTimeout(best_movie_step1, 500);
+                setTimeout(best_movie_step, 500);
                 }
             }
         })
         .then(function (data) {
             console.log(data);
             image_url = get_image_url(data, 0);
+            title = get_title(data, 0);
+            href = get_imdb_url(data, 0)
             image_id = 'best_movie_image'
             image_alt = 'Best Movie'
+            new_paragraph = add_paragraph(best_movie, 'best_movie_title', title)
+            add_button_in(new_paragraph, 'Play', 'play_button', href)
             add_image_in(best_movie, image_id, image_url, image_alt)
-            best_movie_step2(data);
+            get_film_information(data,0).then(film_information => {
+                console.log(film_information.title);
+            })
         })
         .catch(function(error){
             console.log('')
             console.log('function fetch_server_filter: catch error')
             console.log(error)
-            setTimeout(best_movie_step1, 500);
+            setTimeout(best_movie_step, 500);
         })}
+best_movie_step()
 
-function best_movie_step2(data){}
-
-best_movie_step1()
 // <!-- Best rating -->
+var first_image_number = 0;
+function best_rating_step(first_image_number){
+    url = fetch_server_filter(...categories_filter[0])
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                console.log('')
+                console.log('function best_rating_step: response OK')
+                return response.json();
+            }
+            else{
+            console.error('Retour du serveur :', response.status);
+            retry_counter -= 1;
+            if (retry_counter > 0){
+                setTimeout(best_rating_step, 500);
+                }
+            }
+        })
+        .then(function (data) {
+            console.log(data);
+            for(let i=1; i<5;i++){
+                image_url = get_image_url(data, i);
+                href = get_imdb_url(data, i)
+                image_id = 'best_rating_image' + i;
+                image_alt = 'Best Rating n°' + i;
+                add_image_in(best_rating, image_id, image_url, image_alt)
+                get_film_information(data,i).then(film_information => {
+                    console.log(film_information.title);
+                })
+            }
+        })
+        .catch(function(error){
+            console.log('')
+            console.log('function fetch_server_filter: catch error')
+            console.log(error)
+            setTimeout(() => {
+                best_rating_step(first_image_number)
+            }, 500);
+        })}
+best_rating_step(first_image_number)
 
 
 // <!-- By Style -->

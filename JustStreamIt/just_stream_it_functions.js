@@ -8,7 +8,8 @@ function add_image_in(inside, id, image_url, image_alt){
     // Add image in 'inside'
     newDiv.id = id;
     newDiv.append(newImg)
-    inside.append(newDiv);
+    inside.appendChild(newDiv);
+    return newDiv
 }
 
 function add_image_after(after, id, image_url, image_alt){
@@ -21,53 +22,38 @@ function add_image_after(after, id, image_url, image_alt){
     newDiv.id.add(id);
     // Add image after 'after'
     newDiv.append(newImg)
-    after.appendChild(newDiv);
+    after.append(newDiv);
+    return newDiv
 }
 
-function add_div_with_paragraph(after, classList, text){
+function add_paragraph(after, classList, text){
   let newDiv = document.createElement('div');
-  newDiv.classList.add(classList);
+  newDiv.classList = classList;
   let newParagraph = document.createElement('p');
   newParagraph.innerText = text;
   newDiv.append(newParagraph);
   after.append(newDiv);
+  return newDiv;
 }
 
-function add_div_with_image(after, classList, image){
-  let newDiv = document.createElement('div');
-  newDiv.classList.add(classList);
-  let newParagraph = document.createElement('p');
-  newParagraph.innerText = text;
-  newDiv.append(newParagraph);
-  after.append(newDiv);
+function add_button_after(after, text, classList, href){
+    let newButton = document.createElement('a');
+    newButton.text = text;
+    newButton.classList = classList;
+    newButton.href = href;
+    newButton.target="_blank";
+    after.append(newButton);
+    return newButton;
 }
 
-function fetch_server(){
-    fetch(OCMovies_API_URL)
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            else{
-              console.error('Retour du serveur :', response.status);
-              retry_counter -= 1;
-              if (retry_counter > 0){ 
-                fetch_server()
-                }
-            }
-        })
-        .then(function (value) {
-            // best_movie.innerText = value.postData.text
-            add_div_with_paragraph(best_movie, 'best_movie_div', value)
-            console.log(value)
-        })
-        .catch(function(error){
-            console.log(error)
-            retry_counter -= 1;
-            if (retry_counter > 0){ 
-              fetch_server()
-              }
-        });
+function add_button_in(inside, text, classList, href){
+    let newButton = document.createElement('a');
+    newButton.text = text;
+    newButton.classList = classList;
+    newButton.href = href;
+    newButton.target="_blank";
+    inside.appendChild(newButton);
+    return newButton;
 }
 
 function fetch_server_filter(...filter){
@@ -97,9 +83,7 @@ function get(url, retry_counter=10){
                 console.log('function get: response OK')
                 console.log(`${response.url}: ${response.status}`); // shows 200 for every url
                 // return response.json();
-                return new Promise(function(resolve) { 
-                    return response.json();
-                });
+                return response.json();
             }
             else{
               console.error('Retour du serveur :', response.status);
@@ -107,17 +91,13 @@ function get(url, retry_counter=10){
               if (retry_counter > 0){
                   function retry(){get(url, retry_counter);}
                   setTimeout(retry, 500);
-                
                 }
             }
         })
-        // .then(function (json_data) {
-        //     console.log('')
-        //     console.log('function get: return json_data')
-        //     console.log(json_data)
-        //     data = new Promise(function(json_data){return json_data})
-        //     return data;
-        // })
+        .then(data => {
+
+            return data;
+        })
         .catch(function(error){
             console.log('')
             console.log('function get: catch error')
@@ -132,4 +112,52 @@ function get(url, retry_counter=10){
 
 function get_image_url(data, position){
     return data.results[position].image_url
+}
+
+function get_title(data, position){
+    return data.results[position].title
+}
+
+function get_imdb_url(data, position){
+    return data.results[position].imdb_url
+}
+
+async function get_film_information(data, position, retry_counter=10){
+    let url = data.results[position].url;
+    let response = await fetch(url);
+    if (response.ok) {
+        let response_json = await response.json();
+        let image_url = response_json.image_url
+        let title = response_json.title
+        let genres = response_json.genres
+        let date_published = response_json.date_published
+        let rated = response_json.rated
+        let imdb_score = response_json.imdb_score
+        let directors = response_json.directors
+        let actors = response_json.actors
+        let duration = response_json.duration
+        let countries = response_json.countries
+        let budget = response_json.budget
+        let long_description = response_json.long_description
+        return new Film(
+            image_url,
+            title,
+            genres,
+            date_published,
+            rated,
+            imdb_score,
+            directors,
+            actors,
+            duration,
+            countries,
+            budget,
+            long_description)
+    }else{
+        retry_counter -= 1;
+        if (retry_counter > 0){
+            setTimeout(() => {
+                get_film_information(data, position, retry_counter)
+            }, 500);
+        }
+    }
 }
