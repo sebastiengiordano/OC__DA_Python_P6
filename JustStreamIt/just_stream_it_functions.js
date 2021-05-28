@@ -1,11 +1,39 @@
-function add_image(after, image_url, image_alt){  
+function add_image_in(inside, id, image_url, image_alt){
+    // Create image element
+    let newImg = document.createElement('img');
+    newImg.src = image_url;
+    newImg.alt = image_alt;
+    // Create div element
+    let newDiv = document.createElement('div');
+    // Add image in 'inside'
+    newDiv.id = id;
+    newDiv.append(newImg)
+    inside.append(newDiv);
+}
+
+function add_image_after(after, id, image_url, image_alt){
+    // Create image element
     let newImg = document.createElement('img');
     newImg.src.add(image_url);
     newImg.alt.add(image_alt);
-    after.append(newImg);
+    // Create div element
+    let newDiv = document.createElement('div');
+    newDiv.id.add(id);
+    // Add image after 'after'
+    newDiv.append(newImg)
+    after.appendChild(newDiv);
 }
 
 function add_div_with_paragraph(after, classList, text){
+  let newDiv = document.createElement('div');
+  newDiv.classList.add(classList);
+  let newParagraph = document.createElement('p');
+  newParagraph.innerText = text;
+  newDiv.append(newParagraph);
+  after.append(newDiv);
+}
+
+function add_div_with_image(after, classList, image){
   let newDiv = document.createElement('div');
   newDiv.classList.add(classList);
   let newParagraph = document.createElement('p');
@@ -68,13 +96,18 @@ function get(url, retry_counter=10){
                 console.log('')
                 console.log('function get: response OK')
                 console.log(`${response.url}: ${response.status}`); // shows 200 for every url
-                return response.json();
+                // return response.json();
+                return new Promise(function(resolve) { 
+                    return response.json();
+                });
             }
             else{
               console.error('Retour du serveur :', response.status);
               retry_counter -= 1;
               if (retry_counter > 0){
-                get(url, retry_counter);
+                  function retry(){get(url, retry_counter);}
+                  setTimeout(retry, 500);
+                
                 }
             }
         })
@@ -91,7 +124,12 @@ function get(url, retry_counter=10){
             console.log(error)
             retry_counter -= 1;
             if (retry_counter > 0){
-                get(url, retry_counter);
+                function retry(){get(url, retry_counter);}
+                setTimeout(retry, 500);
               }
         });
+}
+
+function get_image_url(data, position){
+    return data.results[position].image_url
 }

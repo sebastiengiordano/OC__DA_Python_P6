@@ -9,7 +9,7 @@ const style_2 = document.getElementById('style_2');
 const style_3 = document.getElementById('style_3');
 
 // Defined all categories filter
-let categories_filter = [["imdb_score_min=5", "sort_by=-imdb_score"], ["year=1977"]];
+let categories_filter = [["sort_by=-imdb_score"], ["year=1977"]];
 
 
 // min_year=
@@ -48,6 +48,7 @@ for (filter of categories_filter){
     );
 }
 
+
 // Send request for all the categories
 // for (r of requets_list){
 //     data_json = r();
@@ -74,30 +75,41 @@ for (filter of categories_filter){
 //     })
 
 // <!-- Best Movie -->
-function best_movie_sequence(){
+function best_movie_step1(){
     url = fetch_server_filter(...categories_filter[0])
     fetch(url)
         .then(function (response) {
             if (response.ok) {
                 console.log('')
-                console.log('function get: response OK')
-                console.log(`${response.url}: ${response.status}`); // shows 200 for every url
+                console.log('function best_movie_step1: response OK')
                 return response.json();
             }
             else{
             console.error('Retour du serveur :', response.status);
             retry_counter -= 1;
             if (retry_counter > 0){
-                get(url, retry_counter);
+                setTimeout(best_movie_step1, 500);
                 }
             }
+        })
+        .then(function (data) {
+            console.log(data);
+            image_url = get_image_url(data, 0);
+            image_id = 'best_movie_image'
+            image_alt = 'Best Movie'
+            add_image_in(best_movie, image_id, image_url, image_alt)
+            best_movie_step2(data);
         })
         .catch(function(error){
             console.log('')
             console.log('function fetch_server_filter: catch error')
             console.log(error)
+            setTimeout(best_movie_step1, 500);
         })}
 
+function best_movie_step2(data){}
+
+best_movie_step1()
 // <!-- Best rating -->
 
 
