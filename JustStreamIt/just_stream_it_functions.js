@@ -1,3 +1,4 @@
+// Functions used to add an image
 function add_image_in(inside, id, image_url, image_alt){
     // Create image element
     let newImg = document.createElement('img');
@@ -26,6 +27,7 @@ function add_image_after(after, id, image_url, image_alt){
     return newDiv
 }
 
+// Function used to add a new text
 function add_paragraph(after, classList, text){
   let newDiv = document.createElement('div');
   newDiv.classList = classList;
@@ -36,6 +38,7 @@ function add_paragraph(after, classList, text){
   return newDiv;
 }
 
+// Functions used to add a button
 function add_button_after(after, text, classList, href){
     let newButton = document.createElement('a');
     newButton.text = text;
@@ -56,6 +59,7 @@ function add_button_in(inside, text, classList, href){
     return newButton;
 }
 
+// Function to generate an url with filter parameters 
 function fetch_server_filter(...filter){
     // Add filter to fetch request
     let count = 0;
@@ -75,41 +79,8 @@ function fetch_server_filter(...filter){
     return url;
 }
 
-function get(url, retry_counter=10){
-    fetch(url)
-        .then(function (response) {
-            if (response.ok) {
-                console.log('')
-                console.log('function get: response OK')
-                console.log(`${response.url}: ${response.status}`); // shows 200 for every url
-                // return response.json();
-                return response.json();
-            }
-            else{
-              console.error('Retour du serveur :', response.status);
-              retry_counter -= 1;
-              if (retry_counter > 0){
-                  function retry(){get(url, retry_counter);}
-                  setTimeout(retry, 500);
-                }
-            }
-        })
-        .then(data => {
-
-            return data;
-        })
-        .catch(function(error){
-            console.log('')
-            console.log('function get: catch error')
-            console.log(error)
-            retry_counter -= 1;
-            if (retry_counter > 0){
-                function retry(){get(url, retry_counter);}
-                setTimeout(retry, 500);
-              }
-        });
-}
-
+// Funcions used to get information from
+// data come from OCMovies-API-EN-FR API
 function get_image_url(data, position){
     return data.results[position].image_url
 }

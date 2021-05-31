@@ -59,8 +59,7 @@ body
     position: relative;
 
     /* Equal to height of footer */
-    margin-bottom: -50px;
-
+    margin-bottom: -60px;
 }
 
 h1
@@ -202,7 +201,8 @@ footer
     display: flex;
     background:  url('images/separateur.png') repeat-x top, url('images/ombre.png') repeat-x top;
     position: absolute;
-    bottom: 0;
+    bottom: -60px;
+    padding-top: 10px;
     min-width: 100%;
     height: 50px;
 }

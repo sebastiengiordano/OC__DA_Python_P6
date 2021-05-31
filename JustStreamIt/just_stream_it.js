@@ -43,42 +43,6 @@ let categories_filter = [
 // rating_contains=
 
 
-// Defined all callback to request
-let requets_list = [];
-for (filter of categories_filter){
-    requets_list.push(
-        function() {
-            fetch_server_filter(...filter);
-        }
-    );
-}
-
-
-// Send request for all the categories
-// for (r of requets_list){
-//     data_json = r();
-//     console.log('// Send request for all the categories');
-//     console.log(data_json);
-//     console.log(`${data_json.results}`);
-// }
-
-
-// Promise.all(requets_list)
-//     .then(responses => {
-//         // all responses are resolved successfully
-//         for(let response of responses) {
-//             console.log('')
-//             console.log(`Promise.all - all resposnes - ${response.url}: ${response.status}`); // shows 200 for every url
-//         }
-//         return responses
-//     })
-//     .then(responses =>{
-//         for(let response of responses) {
-//             response = response.json()
-//             console.log(`${response.url}: ${response.imdb_score}`); // shows 200 for every url
-//         }
-//     })
-
 // <!-- Best Movie -->
 function best_movie_step(){
     url = fetch_server_filter(...categories_filter[0])
