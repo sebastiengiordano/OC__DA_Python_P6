@@ -16,11 +16,11 @@ function add_image_in(inside, id, image_url, image_alt){
 function add_image_after(after, id, image_url, image_alt){
     // Create image element
     let newImg = document.createElement('img');
-    newImg.src.add(image_url);
-    newImg.alt.add(image_alt);
+    newImg.src = image_url;
+    newImg.alt = image_alt;
     // Create div element
     let newDiv = document.createElement('div');
-    newDiv.id.add(id);
+    newDiv.id = id;
     // Add image after 'after'
     newDiv.append(newImg)
     after.append(newDiv);
