@@ -35,7 +35,6 @@ async function get(url, retry_counter=10){
             }
         })
         .then(data => {
-
             return data;
         })
         .catch(function(error){
@@ -57,8 +56,10 @@ for (filter of categories_filter){
     requests_list.push(
         async function() {
             let url = fetch_server_filter(...filter);
-            let data = await get(url);
-            return data;
+            get(url)
+                .then(data =>{
+                    return data;
+                })
         }
     );
 }
@@ -74,3 +75,32 @@ async function request_all(){
     }
 }
 request_all()
+
+
+// Defined all callback to request
+let requests_list_2 = [];
+for (filter of categories_filter){
+    requests_list_2.push(
+        async function() {
+            let url = fetch_server_filter(...filter);
+            get(url)
+                .then(data =>{
+                    return data;
+                })
+        }
+    );
+}
+
+
+// Send request for all the categories
+async function request_all_2(){
+    for (r of requests_list_2){
+        r()
+            .then(data_json =>{
+                console.log('   Send request for all the categories');
+                console.log(data_json);
+                console.log(`${data_json.results}`);
+                })
+    }
+}
+request_all_2()

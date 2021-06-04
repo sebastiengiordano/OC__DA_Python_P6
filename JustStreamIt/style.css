@@ -55,9 +55,8 @@ body
 {
     min-height: 100vh;
     position: relative;
-
     /* Equal to height of footer */
-    margin-bottom: -60px;
+    padding-bottom: 50px;
 }
 
 h1
@@ -143,17 +142,16 @@ nav a:hover
 
 .best_movie_title
 {
-    font-size: 5em;
-    padding-right: 10px;
+    font-size: 4em;
     padding-bottom: 5%;
-    margin-left: 10%;
     align-items: center;
     justify-content: center;
 }
 
 .best_movie_title p
 {
-    margin: inherit;
+    margin: 1em 1em 0 1em;
+    min-width: 8em;
 }
 
 .play_button
@@ -161,7 +159,7 @@ nav a:hover
     position: relative;
     background-image: linear-gradient(to bottom right, red, rgb(200, 100, 100));
     display:inline-block;
-    padding:0.3em 1.2em;
+    padding:0.15em 0.6em;
     margin:2em 5em 0 5em;
     border-radius:2em;
     box-sizing: border-box;
@@ -194,6 +192,10 @@ nav a:hover
     font-size: 0.8em;
 }
 
+.category
+{
+    min-height: 21em;
+}
 
 /* Footer */
 
@@ -201,23 +203,23 @@ footer
 {
     display: flex;
     background:  url('images/separateur.png') repeat-x top, url('images/ombre.png') repeat-x top;
-    padding-bottom: 30px;
+    padding-bottom: 50px;
     min-width: 100%;
 }
 
 
 /* Arrow */
-.right-arrow {
+.right_arrow {
     width: 0; 
     height: 0; 
     border-top: 10.5em solid transparent;
     border-bottom: 10.5em solid transparent;
-    border-left: 40px solid green;
+    border-left: 40px solid bisque;
     position: relative;
     float: right;
   }
   
-  .left-arrow {
+.left_arrow {
     width: 0; 
     height: 0; 
     border-top: 10.5em solid transparent;
