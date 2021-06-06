@@ -14,7 +14,7 @@ const style_3 = document.getElementById('style_3');
 /*****************/
 // best rating id list
 let best_rating_id_list = ['left_arrow_best_rating'];
-for(let i=1; i<=7;i++){
+for (let i=1; i<=7;i++) {
     best_rating_id_list.push('best_rating_image_' + i);
 }
 best_rating_id_list.push('right_arrow_best_rating');
@@ -27,7 +27,7 @@ let best_rating_labels = ['best_rating_image_', 'Best Rating n°'];
 /*************/
 // style_1 id list
 let style_1_id_list = ['left_arrow_style_1'];
-for(let i=1; i<=7;i++){
+for (let i=1; i<=7;i++) {
     style_1_id_list.push('style_1_image_' + i);
 }
 style_1_id_list.push('right_arrow_style_1');
@@ -40,7 +40,7 @@ let style_1_labels = ['style_1_image_', 'Style_1 n°'];
 /*************/
 // style_2 id list
 let style_2_id_list = ['left_arrow_style_2'];
-for(let i=1; i<=7;i++){
+for (let i=1; i<=7;i++) {
     style_2_id_list.push('style_2_image_' + i);
 }
 style_2_id_list.push('right_arrow_style_2');
@@ -53,7 +53,7 @@ let style_2_labels = ['style_2_image_', 'Style_2 n°'];
 /*************/
 // style_3 id list
 let style_3_id_list = ['left_arrow_style_3'];
-for(let i=1; i<=7;i++){
+for (let i=1; i<=7;i++) {
     style_3_id_list.push('style_3_image_' + i);
 }
 style_3_id_list.push('right_arrow_style_3');

@@ -16,7 +16,7 @@ let categories_filter = [
     ['director=Christopher+Nolan'],
 ];
 
-async function get(url, retry_counter=10){
+async function get(url, retry_counter=10) {
     fetch(url)
         .then(function (response) {
             if (response.ok) {
@@ -28,8 +28,8 @@ async function get(url, retry_counter=10){
             else{
               console.error('Retour du serveur :', response.status);
               retry_counter -= 1;
-              if (retry_counter > 0){
-                  function retry(){get(url, retry_counter);}
+              if (retry_counter > 0) {
+                  function retry() {get(url, retry_counter);}
                   setTimeout(retry, 500);
                 }
             }
@@ -37,13 +37,13 @@ async function get(url, retry_counter=10){
         .then(data => {
             return data;
         })
-        .catch(function(error){
+        .catch(function(error) {
             console.log('')
             console.log('function get: catch error')
             console.log(error)
             retry_counter -= 1;
-            if (retry_counter > 0){
-                function retry(){get(url, retry_counter);}
+            if (retry_counter > 0) {
+                function retry() {get(url, retry_counter);}
                 setTimeout(retry, 500);
               }
         });
@@ -52,7 +52,7 @@ async function get(url, retry_counter=10){
 
 // Defined all callback to request
 let requests_list = [];
-for (filter of categories_filter){
+for (filter of categories_filter) {
     requests_list.push(
         async function() {
             let url = fetch_server_filter(...filter);
@@ -66,8 +66,8 @@ for (filter of categories_filter){
 
 
 // Send request for all the categories
-async function request_all(){
-    for (r of requests_list){
+async function request_all() {
+    for (r of requests_list) {
         let data_json = await r();
         console.log('   Send request for all the categories');
         console.log(data_json);
@@ -79,7 +79,7 @@ request_all()
 
 // Defined all callback to request
 let requests_list_2 = [];
-for (filter of categories_filter){
+for (filter of categories_filter) {
     requests_list_2.push(
         async function() {
             let url = fetch_server_filter(...filter);
@@ -93,8 +93,8 @@ for (filter of categories_filter){
 
 
 // Send request for all the categories
-async function request_all_2(){
-    for (r of requests_list_2){
+async function request_all_2() {
+    for (r of requests_list_2) {
         r()
             .then(data_json =>{
                 console.log('   Send request for all the categories');

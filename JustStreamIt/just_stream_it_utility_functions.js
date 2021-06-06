@@ -1,5 +1,5 @@
 // Functions used to add an image
-function add_image_in(inside, id, image_url, image_alt){
+function add_image_in(inside, id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
     newImg.src = image_url;
@@ -13,7 +13,7 @@ function add_image_in(inside, id, image_url, image_alt){
     return newDiv;
 }
 
-function add_image_after(after, id, image_url, image_alt){
+function add_image_after(after, id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
     newImg.src = image_url;
@@ -27,7 +27,7 @@ function add_image_after(after, id, image_url, image_alt){
     return newDiv;
 }
 
-function add_image_before(before, id, image_url, image_alt){
+function add_image_before(before, id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
     newImg.src = image_url;
@@ -43,7 +43,7 @@ function add_image_before(before, id, image_url, image_alt){
 
 
 // Function used to add a new text at the end of an element
-function add_paragraph(element, classList, text){
+function add_paragraph(element, classList, text) {
   let newDiv = document.createElement('div');
   newDiv.classList = classList;
   let newParagraph = document.createElement('p');
@@ -54,7 +54,7 @@ function add_paragraph(element, classList, text){
 }
 
 // Functions used to add a button at the end of an element
-function add_button(element, text, classList, href){
+function add_button(element, text, classList, href) {
     let newButton = document.createElement('a');
     newButton.text = text;
     newButton.classList = classList;
@@ -65,7 +65,7 @@ function add_button(element, text, classList, href){
 }
 
 // Functions used to add a button after an element
-function add_button_after(after, text, classList, href){
+function add_button_after(after, text, classList, href) {
     let newButton = document.createElement('a');
     newButton.text = text;
     newButton.classList = classList;
@@ -81,19 +81,18 @@ function add_arrow(
         direction,
         id,
         category_label,
-        category_filter_number){
+        category_filter_number) {
     // Create new div
     let newArrow = document.createElement('div');
     // Add arrow id
     newArrow.id = id;
     // Create left arrow
-    if (direction === 'left'){
+    if (direction === 'left') {
         newArrow.classList = 'left_arrow';
-        let child = element.firstElementChild;
-        let parent = child.parentNode;
-        parent.insertBefore(newArrow, child);
+        let firstChild = element.firstElementChild;
+        element.insertBefore(newArrow, firstChild);
     }
-    // Create right arrow 
+    // Create right arrow
     else{
         newArrow.classList = 'right_arrow';
         element.lastElementChild.after(newArrow);
@@ -104,17 +103,37 @@ function add_arrow(
         element,
         direction,
         category_label,
-        category_filter_number)
+        category_filter_number);
+}
+
+function add_no_arrow(
+        element,
+        direction) {
+    // Create new div
+    let newArrow = document.createElement('div');
+    // Add arrow id
+    newArrow.id = "no_arrow" + element.id;
+    // Add arrow classList
+    newArrow.classList = 'no_arrow';
+    // Create left no_arrow
+    if (direction === 'left') {
+        let firstChild = element.firstElementChild;
+        element.insertBefore(newArrow, firstChild);
+    }
+    // Create right no_arrow 
+    else{
+        element.lastElementChild.after(newArrow);
+    }
 }
 
 
 // Function to generate an url with filter parameters 
-function fetch_server_filter(...filter){
+function fetch_server_filter(...filter) {
     // Add filter to fetch request
     let count = 0;
     let url = OCMovies_API_URL;
-    for(f of filter){
-        if (count ===0){
+    for (f of filter) {
+        if (count ===0) {
             url += "?";
         }
         else {
@@ -131,16 +150,16 @@ function fetch_server_filter(...filter){
 
 // Functions to seek for which element to add
 function seek_4_left_element_to_add(
-        first_image,
+        firstFilm,
         data_from_REST_API,
         id_list,
         image_id,
-        image_alt){
-    for (i in id_list){
-        if (id_list[i] === first_image){
-            let j = i - 1;
+        image_alt) {
+    for (i in id_list) {
+        if (id_list[i] === firstFilm.id) {
+            let j = parseInt(i) - 1;
             image_id +=  j;
-            image_url = get_image_url(data_from_REST_API, j);
+            image_url = get_film_url(data_from_REST_API, j);
             image_alt += j;
             return [image_id, image_url, image_alt];
         }
@@ -148,18 +167,18 @@ function seek_4_left_element_to_add(
 }
 
 async function seek_4_right_element_to_add(
-        last_image,
+        lastFilm,
         data_from_REST_API,
         id_list,
         image_id,
         image_alt
-        ){
+        ) {
     let number_of_films_on_response = data_from_REST_API.results.length;
-    for (i in id_list){
-        if (id_list[i] === last_image.id){
+    for (i in id_list) {
+        if (id_list[i] === lastFilm.id) {
             let j = parseInt(i) + 1;
             let index = j;
-            if (index >= number_of_films_on_response - 1){
+            if (index >= number_of_films_on_response - 1) {
                 index -= number_of_films_on_response;
                 let url = data_from_REST_API.next;
                 let response = await fetch(url);
@@ -167,15 +186,15 @@ async function seek_4_right_element_to_add(
                     let data = await response.json();
                     console.log(data);
                     image_id +=  j;
-                    image_url = get_image_url(data, index);
+                    image_url = get_film_url(data, index);
                     image_alt += j;
                     return [image_id, image_url, image_alt];
                 }else{
                     retry_counter -= 1;
-                    if (retry_counter > 0){
+                    if (retry_counter > 0) {
                         setTimeout(() => {
                             seek_4_right_element_to_add(
-                                last_image,
+                                lastFilm,
                                 data_from_REST_API,
                                 id_list,
                                 retry_counter);
@@ -190,9 +209,12 @@ async function seek_4_right_element_to_add(
 
 
 // Function to manage click event on arrow
-async function click_event(element, click, category_label, category_filter_number){
+async function click_event(element, click, category_label, category_filter_number) {
     let firstElementChild = element.firstElementChild;
+    let firstFilm = firstElementChild.nextElementSibling;
     let lastElementChild = element.lastElementChild;
+    let lastFilm = lastElementChild.previousElementSibling;
+
     url = fetch_server_filter(...categories_filter[category_filter_number])
     fetch(url)
         .then(function (response) {
@@ -204,7 +226,7 @@ async function click_event(element, click, category_label, category_filter_numbe
             else{
             console.error('Retour du serveur :', response.status);
             retry_counter -= 1;
-            if (retry_counter > 0){
+            if (retry_counter > 0) {
                 setTimeout(()=>{
                     click_event(element, click, category_label, category_filter_number);
                 },
@@ -213,11 +235,11 @@ async function click_event(element, click, category_label, category_filter_numbe
             }
         })
         .then(function (data) {
-            if (click === 'left'){
+            if (click === 'left') {
                 // Add the previous film to the left
-                first_image = firstElementChild.nextElementSibling;
+                firstFilm = firstElementChild.nextElementSibling;
                 [image_id, image_url, image_alt] = seek_4_left_element_to_add(
-                    first_image,
+                    firstFilm,
                     data,
                     best_rating_id_list,
                     category_label[0],
@@ -225,34 +247,39 @@ async function click_event(element, click, category_label, category_filter_numbe
                 newImage = add_image_after(firstElementChild, image_id, image_url, image_alt);
                 // Check if there is no previous film,
                 // in order to remove left arrow
-                if (newImage === best_rating_id_list[1]){
+                if (image_id === best_rating_id_list[1]) {
+                    add_no_arrow(firstElementChild.parentNode, 'left');
                     firstElementChild.remove();
                 }
-                // Otherwise, check if the right arrow shall be added
-                else{
-                    let max_index = best_rating_id_list.length - 1;
-                    let id = best_rating_id_list[max_index];
-                    if(lastElementChild != id){
-                        add_arrow(
-                            lastElementChild,
-                            'right',
-                            id,
-                            category_label,
-                            category_filter_number);
-                    }
+                // Then, check if the right arrow shall be added
+                let max_index = best_rating_id_list.length - 1;
+                let id = best_rating_id_list[max_index];
+                if (lastElementChild != id) {
+                    add_arrow(
+                        lastElementChild.parentNode,
+                        'right',
+                        id,
+                        category_label,
+                        category_filter_number);
+                    // remove the no_arrow
+                    lastElementChild.remove();
                 }
+                // Removed the last film
+                lastFilm.remove();
             }else{
                 // Add the next film to the right
                 add_next_film_to_the_right(
                     firstElementChild,
+                    firstFilm,
                     lastElementChild,
+                    lastFilm,
                     data,
                     best_rating_id_list,
                     category_label,
                     category_filter_number);
             }
         })
-        .catch(function(error){
+        .catch(function(error) {
             console.log('')
             console.log('function click_event: catch error')
             console.log(error)
@@ -261,15 +288,15 @@ async function click_event(element, click, category_label, category_filter_numbe
 
 async function add_next_film_to_the_right(
         firstElementChild,
+        firstFilm,
         lastElementChild,
+        lastFilm,
         data,
         best_rating_id_list,
         category_label,
-        category_filter_number){
-    let last_image = lastElementChild.previousElementSibling;
-
+        category_filter_number) {
     [image_id, image_url, image_alt] = await seek_4_right_element_to_add(
-        last_image,
+        lastFilm,
         data,
         best_rating_id_list,
         category_label[0],
@@ -283,28 +310,26 @@ async function add_next_film_to_the_right(
         );
     // Check if there is no last film,
     // in order to remove right arrow
-    let max_index = best_rating_id_list.length - 2;
-    let id = best_rating_id_list[max_index];
-    if (image_id === id){
+    let lastFilmIndex = best_rating_id_list.length - 2;
+    let lastFilmID = best_rating_id_list[lastFilmIndex];
+    if (image_id === lastFilmID) {
+        add_no_arrow(lastElementChild.parentNode, 'right');
         lastElementChild.remove();
     }
-    // Otherwise, check if the left arrow shall be added
-    else{
-        let left_arrow_id = best_rating_id_list[0];
-        if(firstElementChild.id != left_arrow_id){
-            add_arrow(
-                firstElementChild.parentNode,
-                'left',
-                left_arrow_id,
-                category_label,
-                category_filter_number);
-        }
+    // Then, check if the left arrow shall be added
+    let left_arrow_id = best_rating_id_list[0];
+    if (firstElementChild.id != left_arrow_id) {
+        add_arrow(
+            firstElementChild.parentNode,
+            'left',
+            left_arrow_id,
+            category_label,
+            category_filter_number);
+        // remove the no_arrow
+        firstElementChild.remove();
     }
     // Removed the first film
-    if(firstElementChild.id != left_arrow_id){
-        firstElementChild = firstElementChild.nextElementSibling;
-    }
-    firstElementChild.remove();
+    firstFilm.remove();
 }
 
 function add_event_on_arrow(
@@ -312,7 +337,7 @@ function add_event_on_arrow(
         element,
         click,
         category_label,
-        category_filter_number){
+        category_filter_number) {
     arrow.addEventListener("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -320,21 +345,22 @@ function add_event_on_arrow(
     });
 }
 
+
 // Funcions used to get information from
 // data come from OCMovies-API-EN-FR API
-function get_image_url(data, position){
+function get_film_url(data, position) {
     return data.results[position].image_url;
 }
 
-function get_title(data, position){
+function get_title(data, position) {
     return data.results[position].title;
 }
 
-function get_imdb_url(data, position){
+function get_imdb_url(data, position) {
     return data.results[position].imdb_url;
 }
 
-async function get_film_information(data, position, retry_counter=10){
+async function get_film_information(data, position, retry_counter=10) {
     let url = data.results[position].url;
     let response = await fetch(url);
     if (response.ok) {
@@ -366,7 +392,7 @@ async function get_film_information(data, position, retry_counter=10){
             long_description);
     }else{
         retry_counter -= 1;
-        if (retry_counter > 0){
+        if (retry_counter > 0) {
             setTimeout(() => {
                 get_film_information(data, position, retry_counter);
             }, 500);
@@ -374,7 +400,7 @@ async function get_film_information(data, position, retry_counter=10){
     }
 }
 
-async function get_film_information_from_url(url, retry_counter=10){
+async function get_film_information_from_url(url, retry_counter=10) {
     let response = await fetch(url);
     if (response.ok) {
         let response_json = await response.json();
@@ -405,7 +431,7 @@ async function get_film_information_from_url(url, retry_counter=10){
             long_description);
     }else{
         retry_counter -= 1;
-        if (retry_counter > 0){
+        if (retry_counter > 0) {
             setTimeout(() => {
                 get_film_information(data, position, retry_counter);
             }, 500);
