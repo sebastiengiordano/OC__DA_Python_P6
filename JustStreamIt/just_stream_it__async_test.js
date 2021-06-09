@@ -25,7 +25,7 @@ async function get(url, retry_counter=10) {
                 console.log(`${response.url}: ${response.status}`); // shows 200 for every url
                 return response.json();
             }
-            else{
+            else {
               console.error('Retour du serveur :', response.status);
               retry_counter -= 1;
               if (retry_counter > 0) {

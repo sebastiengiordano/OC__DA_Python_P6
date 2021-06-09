@@ -8,12 +8,14 @@ function manage_best_movie_section() {
                 console.log('function manage_best_movie_section: response OK')
                 return response.json();
             }
-            else{
-            console.error('Retour du serveur :', response.status);
-            retry_counter -= 1;
-            if (retry_counter > 0) {
-                setTimeout(manage_best_movie_section, 500);
-                }
+            else {
+                console.log('')
+                console.log('function manage_best_movie_section')
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(manage_best_movie_section, 500);
+                    }
             }
         })
         .then(function (data) {
@@ -53,12 +55,14 @@ function manage_best_rating_section() {
                 console.log('function manage_best_rating_section: response OK');
                 return response.json();
             }
-            else{
-            console.error('Retour du serveur :', response.status);
-            retry_counter -= 1;
-            if (retry_counter > 0) {
-                setTimeout(manage_best_rating_section, 500);
-                }
+            else {
+                console.log('')
+                console.log('function manage_best_rating_section')
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(manage_best_rating_section, 500);
+                    }
             }
         })
         .then(function (data) {

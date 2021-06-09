@@ -26,7 +26,7 @@ function add_image_after(after, id, image_url, image_alt) {
     after.after(newDiv);
     return newDiv;
 }
-
+/*
 function add_image_before(before, id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
@@ -40,6 +40,7 @@ function add_image_before(before, id, image_url, image_alt) {
     before.parentNode.insertBefore(newDiv, before);
     return newDiv;
 }
+*/
 
 
 // Function used to add a new text at the end of an element
@@ -93,7 +94,7 @@ function add_arrow(
         element.insertBefore(newArrow, firstChild);
     }
     // Create right arrow
-    else{
+    else {
         newArrow.classList = 'right_arrow';
         element.lastElementChild.after(newArrow);
     }
@@ -121,7 +122,7 @@ function add_no_arrow(
         element.insertBefore(newArrow, firstChild);
     }
     // Create right no_arrow 
-    else{
+    else {
         element.lastElementChild.after(newArrow);
     }
 }
@@ -189,7 +190,7 @@ async function seek_4_right_element_to_add(
                     image_url = get_film_url(data, index);
                     image_alt += j;
                     return [image_id, image_url, image_alt];
-                }else{
+                } else {
                     retry_counter -= 1;
                     if (retry_counter > 0) {
                         setTimeout(() => {
@@ -209,7 +210,7 @@ async function seek_4_right_element_to_add(
 
 
 // Function to manage click event on arrow
-async function click_event(element, click, category_label, category_filter_number) {
+async function arrow_click_event(element, click, category_label, category_filter_number) {
     let firstElementChild = element.firstElementChild;
     let firstFilm = firstElementChild.nextElementSibling;
     let lastElementChild = element.lastElementChild;
@@ -220,17 +221,19 @@ async function click_event(element, click, category_label, category_filter_numbe
         .then(function (response) {
             if (response.ok) {
                 console.log('')
-                console.log('function click_event: response OK')
+                console.log('function arrow_click_event: response OK')
                 return response.json();
             }
-            else{
-            console.error('Retour du serveur :', response.status);
-            retry_counter -= 1;
-            if (retry_counter > 0) {
-                setTimeout(()=>{
-                    click_event(element, click, category_label, category_filter_number);
-                },
-                500);
+            else {
+                console.log('')
+                console.log('function arrow_click_event')
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(()=>{
+                        arrow_click_event(element, click, category_label, category_filter_number);
+                    },
+                    500);
                 }
             }
         })
@@ -266,7 +269,7 @@ async function click_event(element, click, category_label, category_filter_numbe
                 }
                 // Removed the last film
                 lastFilm.remove();
-            }else{
+            } else {
                 // Add the next film to the right
                 add_next_film_to_the_right(
                     firstElementChild,
@@ -281,7 +284,7 @@ async function click_event(element, click, category_label, category_filter_numbe
         })
         .catch(function(error) {
             console.log('')
-            console.log('function click_event: catch error')
+            console.log('function arrow_click_event: catch error')
             console.log(error)
         })
 }
@@ -338,13 +341,61 @@ function add_event_on_arrow(
         click,
         category_label,
         category_filter_number) {
-    arrow.addEventListener("click", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        click_event(element, click, category_label, category_filter_number);
+    arrow.addEventListener("click", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        arrow_click_event(element, click, category_label, category_filter_number);
     });
 }
 
+
+// Function to manage click event on film
+// This will open a modal with film informations
+function modal_click_event(url) {
+        film_information = get_film_information_from_url(url);
+        show_modal(film_information);
+}
+
+function show_modal(film_information) {
+    /* The Modal */
+    // Create modal body
+    let modal = document.createElement('div');
+    modal.id = "modal_id";
+    modal.classList = "modal";
+    // Add click event in order to close the modal
+    modal.addEventListener("click", event => {close_modal (event);});
+    // Add modal content inside modal body 
+    modal_content = document.createElement('div');
+    modal_content.classList = "modal_content";
+    modal.append(modal_content);
+    // Add modal container inside modal content
+    modal_container = document.createElement('div');
+    modal_container.classList = "modal_container";
+    modal_content.append(modal_container);
+    // Add close button inside modal container
+    let span = document.createElement('span');
+    span.classList = 'closebtn';
+    span.addEventListener("click", event => {close_modal (event);});
+    modal_content.append(span);
+    // Add film informations inside the modal container
+    add_film_information(film_information);
+}
+
+// Function used to add film informations inside the modal container
+function add_film_information(film_information) {
+    let modalContainer = document.getElementById('modal_container');
+    for (element of film_information) {
+        let p = document.createElement('p');
+    }
+}
+
+// Function for click event, used to close the modal
+function close_modal (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    let modal = document.getElementById("modal_id");
+    modal.remove();
+}
 
 // Funcions used to get information from
 // data come from OCMovies-API-EN-FR API
@@ -390,7 +441,7 @@ async function get_film_information(data, position, retry_counter=10) {
             countries,
             budget,
             long_description);
-    }else{
+    } else {
         retry_counter -= 1;
         if (retry_counter > 0) {
             setTimeout(() => {
@@ -429,11 +480,11 @@ async function get_film_information_from_url(url, retry_counter=10) {
             countries,
             budget,
             long_description);
-    }else{
+    } else {
         retry_counter -= 1;
         if (retry_counter > 0) {
             setTimeout(() => {
-                get_film_information(data, position, retry_counter);
+                get_film_information_from_url(url, retry_counter);
             }, 500);
         }
     }
