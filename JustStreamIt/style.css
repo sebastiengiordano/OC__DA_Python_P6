@@ -264,6 +264,14 @@ footer
     width: 80%;
 }
 
+.modal h2{
+    text-decoration: underline overline bisque;
+    font-size: 2em;
+    font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: center;
+    padding-top: 10px;
+}
+
 
 .animate-modal
 {

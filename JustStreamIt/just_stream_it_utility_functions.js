@@ -1,5 +1,5 @@
 // Functions used to add an image
-function add_image_in(inside, id, image_url, image_alt) {
+function add_image_in(inside, image_id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
     newImg.src = image_url;
@@ -7,7 +7,7 @@ function add_image_in(inside, id, image_url, image_alt) {
     // Create div element
     let newDiv = document.createElement('div');
     // Add image in 'inside'
-    newDiv.id = id;
+    newDiv.id = image_id;
     newDiv.append(newImg);
     inside.append(newDiv);
     return newDiv;
@@ -43,13 +43,33 @@ function add_image_before(before, id, image_url, image_alt) {
 */
 
 
-// Function used to add a new text at the end of an element
+// Function used to add a new text inside an element
 function add_paragraph(element, classList, text) {
   let newDiv = document.createElement('div');
   newDiv.classList = classList;
   let newParagraph = document.createElement('p');
   newParagraph.innerText = text;
   newDiv.append(newParagraph);
+  element.append(newDiv);
+  return newDiv;
+}
+
+function add_title_h1(element, classList, text) {
+  let newDiv = document.createElement('div');
+  newDiv.classList = classList;
+  let newTitle = document.createElement('h1');
+  newTitle.innerText = text;
+  newDiv.append(newTitle);
+  element.append(newDiv);
+  return newDiv;
+}
+
+function add_title_h2(element, classList, text) {
+  let newDiv = document.createElement('div');
+  newDiv.classList = classList;
+  let newTitle = document.createElement('h2');
+  newTitle.innerText = text;
+  newDiv.append(newTitle);
   element.append(newDiv);
   return newDiv;
 }
@@ -160,9 +180,10 @@ function seek_4_left_element_to_add(
         if (id_list[i] === firstFilm.id) {
             let j = parseInt(i) - 1;
             image_id +=  j;
-            image_url = get_film_url(data_from_REST_API, j);
+            film_url = get_film_url(data_from_REST_API, j);
+            image_url = get_film_image_url(data_from_REST_API, j);
             image_alt += j;
-            return [image_id, image_url, image_alt];
+            return [image_id, film_url, image_url, image_alt];
         }
     }
 }
@@ -187,9 +208,10 @@ async function seek_4_right_element_to_add(
                     let data = await response.json();
                     console.log(data);
                     image_id +=  j;
-                    image_url = get_film_url(data, index);
+                    film_url = get_film_url(data, index);
+                    image_url = get_film_image_url(data, index);
                     image_alt += j;
-                    return [image_id, image_url, image_alt];
+                    return [image_id, film_url, image_url, image_alt];
                 } else {
                     retry_counter -= 1;
                     if (retry_counter > 0) {
@@ -241,13 +263,14 @@ async function arrow_click_event(element, click, category_label, category_filter
             if (click === 'left') {
                 // Add the previous film to the left
                 firstFilm = firstElementChild.nextElementSibling;
-                [image_id, image_url, image_alt] = seek_4_left_element_to_add(
+                [image_id, film_url, image_url, image_alt] = seek_4_left_element_to_add(
                     firstFilm,
                     data,
                     best_rating_id_list,
                     category_label[0],
                     category_label[1]);
                 newImage = add_image_after(firstElementChild, image_id, image_url, image_alt);
+                add_event_on_film(newImage, film_url);
                 // Check if there is no previous film,
                 // in order to remove left arrow
                 if (image_id === best_rating_id_list[1]) {
@@ -298,7 +321,7 @@ async function add_next_film_to_the_right(
         best_rating_id_list,
         category_label,
         category_filter_number) {
-    [image_id, image_url, image_alt] = await seek_4_right_element_to_add(
+    [image_id, film_url, image_url, image_alt] = await seek_4_right_element_to_add(
         lastFilm,
         data,
         best_rating_id_list,
@@ -311,6 +334,7 @@ async function add_next_film_to_the_right(
         image_url,
         image_alt
         );
+    add_event_on_film(newImage, film_url);
     // Check if there is no last film,
     // in order to remove right arrow
     let lastFilmIndex = best_rating_id_list.length - 2;
@@ -351,8 +375,19 @@ function add_event_on_arrow(
 
 // Function to manage click event on film
 // This will open a modal with film informations
-function modal_click_event(url) {
-        film_information = get_film_information_from_url(url);
+function add_event_on_film(
+    film,
+    url
+    ) {
+    film.addEventListener("click", function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    modal_click_event(url);
+});
+}
+
+async function modal_click_event(url) {
+        let film_information = await get_film_information_from_url(url);
         show_modal(film_information);
 }
 
@@ -362,14 +397,18 @@ function show_modal(film_information) {
     let modal = document.createElement('div');
     modal.id = "modal_id";
     modal.classList = "modal";
+    bloc_page = document.getElementById('bloc_page')
+    bloc_page.append(modal);
     // Add click event in order to close the modal
     modal.addEventListener("click", event => {close_modal (event);});
     // Add modal content inside modal body 
     modal_content = document.createElement('div');
+    modal_content.id = "modal_content";
     modal_content.classList = "modal_content";
     modal.append(modal_content);
     // Add modal container inside modal content
     modal_container = document.createElement('div');
+    modal_container.id = "modal_container";
     modal_container.classList = "modal_container";
     modal_content.append(modal_container);
     // Add close button inside modal container
@@ -384,9 +423,60 @@ function show_modal(film_information) {
 // Function used to add film informations inside the modal container
 function add_film_information(film_information) {
     let modalContainer = document.getElementById('modal_container');
-    for (element of film_information) {
-        let p = document.createElement('p');
-    }
+    
+    add_title_h1(
+        modalContainer,
+        'film_title',
+        film_information.title);
+    add_image_in(
+        modalContainer,
+        'film_picture',
+        film_information.image_url,
+        'Picture of the film: ' + film_information.title);
+    let more_information = add_title_h2(
+        modalContainer,
+        'more_information',
+        'More informations:');
+    add_paragraph(
+        more_information,
+        'genres',
+        'Category :' + film_information.genres);
+    add_paragraph(
+        more_information,
+        'date_published',
+        film_information.date_published);
+    add_paragraph(
+        more_information,
+        'rated',
+        film_information.rated);
+    add_paragraph(
+        more_information,
+        'imdb_score',
+        film_information.imdb_score);
+    add_paragraph(
+        more_information,
+        'directors',
+        film_information.directors);
+    add_paragraph(
+        more_information,
+        'actors',
+        film_information.actors);
+    add_paragraph(
+        more_information,
+        'duration',
+        film_information.duration);
+    add_paragraph(
+        more_information,
+        'duration',
+        film_information.duration);
+    add_paragraph(
+        more_information,
+        'budget',
+        film_information.budget);
+    add_paragraph(
+        more_information,
+        'long_description',
+        film_information.long_description);
 }
 
 // Function for click event, used to close the modal
@@ -400,6 +490,9 @@ function close_modal (event) {
 // Funcions used to get information from
 // data come from OCMovies-API-EN-FR API
 function get_film_url(data, position) {
+    return data.results[position].url;
+}
+function get_film_image_url(data, position) {
     return data.results[position].image_url;
 }
 

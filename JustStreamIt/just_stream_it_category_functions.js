@@ -38,10 +38,12 @@ function best_movie_section_update(data) {
     href = get_imdb_url(data, 0);
     add_button(new_paragraph, 'Play', 'play_button', href);
     // Add image in best_movie div
-    image_id = 'best_movie_image';
-    image_url = get_film_url(data, 0);
-    image_alt = 'Best Movie';
-    add_image_in(best_movie, image_id, image_url, image_alt);
+    let image_id = 'best_movie_image';
+    let film_url = get_film_url(data, 0);
+    let image_url = get_film_image_url(data, 0);
+    let image_alt = 'Best Movie';
+    let film_picture = add_image_in(best_movie, image_id, image_url, image_alt);
+    add_event_on_film(film_picture, film_url);
 }
 
 
@@ -82,13 +84,15 @@ function best_rating_section_update(data ) {
     for (let i=1; i<5;i++) {
         href = get_imdb_url(data, i);
         image_id = 'best_rating_image_' + i;
-        image_url = get_film_url(data, i);
+        film_url = get_film_url(data, i);
+        image_url = get_film_image_url(data, i);
         image_alt = 'Best Rating n°' + i;
         child = add_image_after(
             child,
             image_id,
             image_url,
             image_alt);
+        add_event_on_film(child, film_url);
     }
 }
 
