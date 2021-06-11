@@ -49,6 +49,8 @@ body
     font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: bisque;
     min-height: 100vh;
+    min-width: 1000px;
+    _width: expression( document.body.clientWidth > 1000 ? "1000px" : "auto" );
 }
 
 #bloc_page
@@ -243,8 +245,9 @@ footer
 /* Modal */
 .modal{
     z-index: 3;
-    display: none;
-    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    padding: 4em;
     position: fixed;
     left: 0;
     top: 0;
@@ -254,41 +257,69 @@ footer
     background-color:rgba(0,0,0,0.4)
 }
 
-.modal-content
+.modal_content
 {
-    margin: auto;
-    background-color: #fff;
+    background-color: navy;
     position: relative;
     padding: 0;
     outline: 0;
-    width: 80%;
+    min-width: 600px;
+    max-width: 45em;
+    margin-bottom: 15em;
+    overflow-y : auto;
 }
 
-.modal h2{
-    text-decoration: underline overline bisque;
-    font-size: 2em;
-    font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+.modal_container
+{
+    display: block;
+    padding: 1em 4em;
+}
+
+.modal h1 {
+    color:  bisque;
+    font-size: 4em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
     justify-content: center;
+    text-align: center;
     padding-top: 10px;
 }
 
+.modal h2 {
+    text-decoration: underline bisque;
+    font-size: 2em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding-top: 1em;
+}
 
-.animate-modal
+
+.animate_modal
 {
-    animation: animatezoom 0.6s;
+    animation: animatezoom 2s;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)!important;
     box-sizing: border-box;
 }
 
-.closebtn
-{
+.film_picture {
+    display: flex;
+    justify-content: center;
+}
+
+.Description {
+    text-align: justify;
+    margin-bottom: 1em;
+}
+
+.closebtn {
     position: absolute;
-    padding: 10px 10px 10px 10px !important;
+    padding: 1em !important;
     right: 0;
     top: 0;
     text-decoration: none;
     float: right;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
 }
 

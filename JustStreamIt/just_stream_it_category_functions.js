@@ -4,8 +4,8 @@ function manage_best_movie_section() {
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('')
-                console.log('function manage_best_movie_section: response OK')
+                console.log('');
+                console.log('function manage_best_movie_section: response OK');
                 return response.json();
             }
             else {
@@ -22,11 +22,11 @@ function manage_best_movie_section() {
             best_movie_section_update(data);
             })
         .catch(function(error) {
-            console.log('')
-            console.log('function manage_best_movie_section: catch error')
-            console.log(error)
-            setTimeout(manage_best_movie_section, 500);
-        })}
+            console.log('');
+            console.log('function manage_best_movie_section: catch error');
+            console.log(error);
+        })
+}
 
 
 function best_movie_section_update(data) {
@@ -58,8 +58,8 @@ function manage_best_rating_section() {
                 return response.json();
             }
             else {
-                console.log('')
-                console.log('function manage_best_rating_section')
+                console.log('');
+                console.log('function manage_best_rating_section');
                 console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
@@ -78,7 +78,7 @@ function manage_best_rating_section() {
         })
 }
 
-function best_rating_section_update(data ) {
+function best_rating_section_update(data) {
     // let firstElementChild = best_rating.firstElementChild;
     let child = best_rating.firstElementChild;
     for (let i=1; i<5;i++) {

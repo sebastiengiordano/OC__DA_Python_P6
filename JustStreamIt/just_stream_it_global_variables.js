@@ -67,3 +67,23 @@ let categories_filter = [
     ['genre=Fantasy', "sort_by=-imdb_score"],
     ['director=Christopher+Nolan'],
 ];
+
+
+/***********/
+/*  Other  */
+/***********/
+// month_name
+let month_name = [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novenbre',
+    'Décembre',
+]
