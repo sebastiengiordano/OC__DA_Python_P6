@@ -193,7 +193,9 @@ async function seek_4_right_element_to_add(
         data_from_REST_API,
         id_list,
         image_id,
-        image_alt
+        image_alt,
+        retry,
+        retry_counter
         ) {
     let number_of_films_on_response = data_from_REST_API.results.length;
     for (i in id_list) {
@@ -213,16 +215,9 @@ async function seek_4_right_element_to_add(
                     image_alt += j;
                     return [image_id, film_url, image_url, image_alt];
                 } else {
-                    retry_counter -= 1;
                     if (retry_counter > 0) {
-                        setTimeout(() => {
-                            seek_4_right_element_to_add(
-                                lastFilm,
-                                data_from_REST_API,
-                                id_list,
-                                retry_counter);
-                        }, 500);
-                    break;
+                        setTimeout(retry, 500);
+                        break;
                     }
                 }
             }
@@ -320,13 +315,26 @@ async function add_next_film_to_the_right(
         data,
         best_rating_id_list,
         category_label,
-        category_filter_number) {
+        category_filter_number,
+        retry_counter=10) {
+    const retry = () => {add_next_film_to_the_right(
+        firstElementChild,
+        firstFilm,
+        lastElementChild,
+        lastFilm,
+        data,
+        best_rating_id_list,
+        category_label,
+        category_filter_number,
+        retry_counter-=1);}
     [image_id, film_url, image_url, image_alt] = await seek_4_right_element_to_add(
         lastFilm,
         data,
         best_rating_id_list,
         category_label[0],
-        category_label[1]);
+        category_label[1],
+        retry,
+        retry_counter);
     // Add new image to the end 
     newImage = add_image_after(
         lastElementChild.previousElementSibling,
