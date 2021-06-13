@@ -228,7 +228,7 @@ async function seek_4_right_element_to_add(
 
 
 // Function to manage click event on arrow
-async function arrow_click_event(element, click, category_label, category_filter_number) {
+async function arrow_click_event(element, click, category_label, category_filter_number, id_list) {
     let firstElementChild = element.firstElementChild;
     let firstFilm = firstElementChild.nextElementSibling;
     let lastElementChild = element.lastElementChild;
@@ -244,7 +244,7 @@ async function arrow_click_event(element, click, category_label, category_filter
                 retry_counter -= 1;
                 if (retry_counter > 0) {
                     setTimeout(() => {
-                        arrow_click_event(element, click, category_label, category_filter_number);
+                        arrow_click_event(element, click, category_label, category_filter_number, id_list);
                     },
                     500);
                 }
@@ -257,20 +257,20 @@ async function arrow_click_event(element, click, category_label, category_filter
                 [image_id, film_url, image_url, image_alt] = seek_4_left_element_to_add(
                     firstFilm,
                     data,
-                    best_rating_id_list,
+                    id_list,
                     category_label[0],
                     category_label[1]);
                 let newImage = add_image_after(firstElementChild, image_id, image_url, image_alt);
                 add_event_on_film(newImage, film_url);
                 // Check if there is no previous film,
                 // in order to remove left arrow
-                if (image_id === best_rating_id_list[1]) {
+                if (image_id === id_list[1]) {
                     add_no_arrow(firstElementChild.parentNode, 'left');
                     firstElementChild.remove();
                 }
                 // Then, check if the right arrow shall be added
-                let max_index = best_rating_id_list.length - 1;
-                let id = best_rating_id_list[max_index];
+                let max_index = id_list.length - 1;
+                let id = id_list[max_index];
                 if (lastElementChild != id) {
                     add_arrow(
                         lastElementChild.parentNode,
@@ -291,7 +291,7 @@ async function arrow_click_event(element, click, category_label, category_filter
                     lastElementChild,
                     lastFilm,
                     data,
-                    best_rating_id_list,
+                    id_list,
                     category_label,
                     category_filter_number);
             }
@@ -309,7 +309,7 @@ async function add_next_film_to_the_right(
         lastElementChild,
         lastFilm,
         data,
-        best_rating_id_list,
+        id_list,
         category_label,
         category_filter_number,
         retry_counter=10) {
@@ -319,14 +319,14 @@ async function add_next_film_to_the_right(
         lastElementChild,
         lastFilm,
         data,
-        best_rating_id_list,
+        id_list,
         category_label,
         category_filter_number,
         retry_counter-=1);}
     [image_id, film_url, image_url, image_alt] = await seek_4_right_element_to_add(
         lastFilm,
         data,
-        best_rating_id_list,
+        id_list,
         category_label[0],
         category_label[1],
         retry,
@@ -341,14 +341,14 @@ async function add_next_film_to_the_right(
     add_event_on_film(newImage, film_url);
     // Check if there is no last film,
     // in order to remove right arrow
-    let lastFilmIndex = best_rating_id_list.length - 2;
-    let lastFilmID = best_rating_id_list[lastFilmIndex];
+    let lastFilmIndex = id_list.length - 2;
+    let lastFilmID = id_list[lastFilmIndex];
     if (image_id === lastFilmID) {
         add_no_arrow(lastElementChild.parentNode, 'right');
         lastElementChild.remove();
     }
     // Then, check if the left arrow shall be added
-    let left_arrow_id = best_rating_id_list[0];
+    let left_arrow_id = id_list[0];
     if (firstElementChild.id != left_arrow_id) {
         add_arrow(
             firstElementChild.parentNode,
@@ -368,11 +368,12 @@ function add_event_on_arrow(
         element,
         click,
         category_label,
-        category_filter_number) {
+        category_filter_number,
+        id_list) {
     arrow.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        arrow_click_event(element, click, category_label, category_filter_number);
+        arrow_click_event(element, click, category_label, category_filter_number, id_list);
     });
 }
 

@@ -9,5 +9,7 @@ best_rating_add_event_on_arrow();
 
 // <!-- By Style -->
 //* style_1 */
+manage_style_1_section();
+style_1_add_event_on_arrow();
 //* style_2 */
 //* style_3 */

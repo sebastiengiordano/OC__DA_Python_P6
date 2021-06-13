@@ -1,7 +1,6 @@
 /* Custom fonts */
 
-@font-face
-{
+@font-face {
     font-family: 'BallparkWeiner';
     src: url('font/ballpark.eot');
     src: url('font/ballpark.eot?#iefix') format('embedded-opentype'),
@@ -12,8 +11,7 @@
     font-style: normal;
 }
 
-@font-face
-{
+@font-face {
     font-family: 'Dayrom';
     src: url('font/dayrom.eot');
     src: url('font/dayrom.eot?#iefix') format('embedded-opentype'),
@@ -24,8 +22,7 @@
     font-style: normal;
 }
 
-@font-face
-{
+@font-face {
     font-family: 'Kaushan';
     src: url('font/KaushanScript-Regular.otf') format('embedded-opentype');
     font-weight: normal;
@@ -43,8 +40,7 @@
     position: relative;
 }
 
-body
-{
+body {
     background: url('images/purple_background.jpg');
     font-family: Kaushan, 'Trebuchet MS', Arial, sans-serif;
     color: bisque;
@@ -53,16 +49,14 @@ body
     _width: expression( document.body.clientWidth > 1000 ? "1000px" : "auto" );
 }
 
-#bloc_page
-{
+#bloc_page {
     min-height: 100vh;
     position: relative;
     /* Equal to height of footer */
     padding-bottom: 50px;
 }
 
-h1
-{
+h1 {
     display: flex;
     font-size: 4em;
     font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -75,8 +69,7 @@ h1
 /* Header */
 /**********/
 
-header
-{
+header {
     font-family: Dayrom, serif;
     background: url('images/separateur.png') repeat-x bottom;
     display: flex;
@@ -85,17 +78,16 @@ header
     color:bisque;
 }
 
-#logo
-{
+#logo {
     display: flex;
     flex-direction: row;
     align-items: baseline;
 }
 
-#logo img
-{
+#logo img {
     width: 50px;
     height: 40px;
+    margin: 0 2em;
 }
 
 
@@ -103,27 +95,24 @@ header
 /* Navigation */
 /**************/
 
-nav ul
-{
+nav ul {
     list-style-type: none;
     display: flex;
+    padding-right: 1em;
 }
 
-nav li
-{
+nav li {
     margin-right: 15px;
 }
 
-nav a
-{
+nav a {
     font-size: 1.3em;
     color:bisque;
     padding-bottom: 3px;
     text-decoration: none;
 }
 
-nav a:hover
-{
+nav a:hover {
     color: #760001;
     border-bottom: 3px solid #760001;
 }
@@ -133,8 +122,7 @@ nav a:hover
 /* Category */
 /************/
 
-#best_movie
-{
+#best_movie {
     display: flex;
     height: fit-content;
     justify-content: center; /* align horizontal */
@@ -142,22 +130,19 @@ nav a:hover
     margin-top: 50px;
 }
 
-.best_movie_title
-{
+.best_movie_title {
     font-size: 4em;
     padding-bottom: 5%;
     align-items: center;
     justify-content: center;
 }
 
-.best_movie_title p
-{
+.best_movie_title p {
     margin: 1em 1em 0 1em;
     min-width: 8em;
 }
 
-.play_button
-{
+.play_button {
     position: relative;
     background-image: linear-gradient(to bottom right, red, rgb(200, 100, 100));
     display:inline-block;
@@ -176,8 +161,7 @@ nav a:hover
     color: red;
 }
 
-#best_rating
-{
+.category {
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -192,17 +176,12 @@ nav a:hover
     padding-bottom: 15px;
     color: white;
     font-size: 0.8em;
-}
-
-.category
-{
     min-height: 21em;
 }
 
 /* Footer */
 
-footer
-{
+footer {
     display: flex;
     background:  url('images/separateur.png') repeat-x top, url('images/ombre.png') repeat-x top;
     padding-bottom: 50px;
@@ -257,8 +236,7 @@ footer
     background-color:rgba(0,0,0,0.4)
 }
 
-.modal_content
-{
+.modal_content {
     background-color: navy;
     position: relative;
     padding: 0;
@@ -269,8 +247,7 @@ footer
     overflow-y : auto;
 }
 
-.modal_container
-{
+.modal_container {
     display: block;
     padding: 1em 4em;
 }
@@ -295,8 +272,7 @@ footer
 }
 
 
-.animate_modal
-{
+.animate_modal {
     animation: animatezoom 2s;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)!important;
     box-sizing: border-box;

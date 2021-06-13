@@ -4,14 +4,9 @@ function manage_best_movie_section() {
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('');
-                console.log('function manage_best_movie_section: response OK');
                 return response.json();
             }
             else {
-                console.log('')
-                console.log('function manage_best_movie_section')
-                console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
                     setTimeout(manage_best_movie_section, 500);
@@ -30,7 +25,6 @@ function manage_best_movie_section() {
 
 
 function best_movie_section_update(data) {
-    console.log(data);
     // Add best movie title inside best_movie div
     title = get_title(data, 0);
     new_paragraph = add_paragraph(best_movie, 'best_movie_title', title);
@@ -43,6 +37,7 @@ function best_movie_section_update(data) {
     let image_url = get_film_image_url(data, 0);
     let image_alt = 'Best Movie';
     let film_picture = add_image_in(best_movie, image_id, image_url, image_alt);
+    // Add click event on film, to open a modal
     add_event_on_film(film_picture, film_url);
 }
 
@@ -53,14 +48,9 @@ function manage_best_rating_section() {
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('');
-                console.log('function manage_best_rating_section: response OK');
                 return response.json();
             }
             else {
-                console.log('');
-                console.log('function manage_best_rating_section');
-                console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
                     setTimeout(manage_best_rating_section, 500);
@@ -74,12 +64,10 @@ function manage_best_rating_section() {
             console.log('');
             console.log('function manage_best_rating_section: catch error');
             console.log(error);
-            setTimeout(manage_best_rating_section, 500);
         })
 }
 
 function best_rating_section_update(data) {
-    // let firstElementChild = best_rating.firstElementChild;
     let child = best_rating.firstElementChild;
     for (let i=1; i<5;i++) {
         href = get_imdb_url(data, i);
@@ -104,5 +92,66 @@ function best_rating_add_event_on_arrow() {
         best_rating,
         'right',
         best_rating_labels,
-        0);
+        0,
+        best_rating_id_list);
+}
+
+
+// Functions to manage style_1 section
+function manage_style_1_section() {
+    url = fetch_server_filter(...categories_filter[1]);
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                console.log('');
+                console.log('function manage_style_1_section: response OK');
+                return response.json();
+            }
+            else {
+                console.log('');
+                console.log('function manage_style_1_section');
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(manage_style_1_section, 500);
+                    }
+            }
+        })
+        .then(function (data) {
+            style_1_section_update(data);
+        })
+        .catch(function(error) {
+            console.log('');
+            console.log('function manage_style_1_section: catch error');
+            console.log(error);
+        })
+}
+
+function style_1_section_update(data) {
+    let child = style_1.firstElementChild;
+    for (let i=0; i<4;i++) {
+        href = get_imdb_url(data, i);
+        image_id = style_1_labels[0] + i;
+        film_url = get_film_url(data, i);
+        image_url = get_film_image_url(data, i);
+        image_alt = style_1_labels[1] + i;
+        child = add_image_after(
+            child,
+            image_id,
+            image_url,
+            image_alt);
+        add_event_on_film(child, film_url);
+    }
+}
+
+function style_1_add_event_on_arrow() {
+    let max_index = style_1_id_list.length - 1;
+    let arrow = document.getElementById(style_1_id_list[max_index]);
+    add_event_on_arrow(
+        arrow,
+        style_1,
+        'right',
+        style_1_labels,
+        1,
+        style_1_id_list);
 }
