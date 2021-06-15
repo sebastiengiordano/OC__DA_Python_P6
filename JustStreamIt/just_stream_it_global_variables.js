@@ -15,18 +15,23 @@ const style_3 = document.getElementById('style_3');
 // Defined all categories filter
 let categories_filter = [
     ["sort_by=-imdb_score"],
-    ["year=1977", "sort_by=-imdb_score"],
+    ["min_year=1970", "max_year=1980", "sort_by=-imdb_score", "actor=Diane+Keaton"],
     ['genre=Fantasy', "sort_by=-imdb_score"],
     ['director=Christopher+Nolan'],
 ];
 
+
+/*********************************/
+/*  Number of films by category  */
+/*********************************/
+let numberOfFilmByCategory = 8;
 
 /*****************/
 /*  Best rating  */
 /*****************/
 // best rating id list
 let best_rating_id_list = ['left_arrow_best_rating'];
-for (let i=1; i<=7;i++) {
+for (let i=1; i<=numberOfFilmByCategory; i++) {
     best_rating_id_list.push('best_rating_image_' + i);
 }
 best_rating_id_list.push('right_arrow_best_rating');
@@ -39,7 +44,7 @@ let best_rating_labels = ['best_rating_image_', 'Best Rating n°'];
 /*************/
 // style_1 id list
 let style_1_id_list = ['left_arrow_style_1'];
-for (let i=0; i<7;i++) {
+for (let i=0; i<numberOfFilmByCategory; i++) {
     style_1_id_list.push('style_1_image_' + i);
 }
 style_1_id_list.push('right_arrow_style_1');
@@ -52,7 +57,7 @@ let style_1_labels = ['style_1_image_', 'Best film of 1977 n°'];
 /*************/
 // style_2 id list
 let style_2_id_list = ['left_arrow_style_2'];
-for (let i=0; i<7;i++) {
+for (let i=0; i<numberOfFilmByCategory; i++) {
     style_2_id_list.push('style_2_image_' + i);
 }
 style_2_id_list.push('right_arrow_style_2');
@@ -65,7 +70,7 @@ let style_2_labels = ['style_2_image_', 'Fantasy n°'];
 /*************/
 // style_3 id list
 let style_3_id_list = ['left_arrow_style_3'];
-for (let i=0; i<7;i++) {
+for (let i=0; i<numberOfFilmByCategory; i++) {
     style_3_id_list.push('style_3_image_' + i);
 }
 style_3_id_list.push('right_arrow_style_3');

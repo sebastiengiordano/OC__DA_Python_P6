@@ -104,7 +104,8 @@ function add_arrow(
         direction,
         id,
         category_label,
-        category_filter_number) {
+        category_filter_number,
+        id_list) {
     // Create new div
     let newArrow = document.createElement('div');
     // Add arrow id
@@ -126,7 +127,8 @@ function add_arrow(
         element,
         direction,
         category_label,
-        category_filter_number);
+        category_filter_number,
+        id_list);
 }
 
 function add_no_arrow(
@@ -181,10 +183,12 @@ function seek_4_left_element_to_add(
     for (i in id_list) {
         if (id_list[i] === firstFilm.id) {
             let j = parseInt(i) - 1;
+            // Get the index of the next film, according to data_from_REST_API
+            let index = id_list[j].charAt(id_list[j].length - 1);
             image_id =  id_list[j];
-            film_url = get_film_url(data_from_REST_API, j);
-            image_url = get_film_image_url(data_from_REST_API, j);
-            image_alt += id_list[j].charAt(id_list[j].length - 1);
+            film_url = get_film_url(data_from_REST_API, index);
+            image_url = get_film_image_url(data_from_REST_API, index);
+            image_alt += index;
             return [image_id, film_url, image_url, image_alt];
         }
     }
@@ -203,8 +207,9 @@ async function seek_4_right_element_to_add(
     for (i in id_list) {
         if (id_list[i] === lastFilm.id) {
             let j = parseInt(i) + 1;
-            let index = j;
-            if (index >= number_of_films_on_response - 1) {
+            // Get the index of the next film, according to data_from_REST_API
+            let index =id_list[j].charAt(id_list[j].length - 1);;
+            if (index >= number_of_films_on_response) {
                 index -= number_of_films_on_response;
                 let url = data_from_REST_API.next;
                 let response = await fetch(url);
@@ -221,6 +226,12 @@ async function seek_4_right_element_to_add(
                         break;
                     }
                 }
+            } else {
+                image_id =  id_list[j];
+                let film_url = get_film_url(data_from_REST_API, index);
+                let image_url = get_film_image_url(data_from_REST_API, index);
+                image_alt += id_list[j].charAt(id_list[j].length - 1);
+                return [image_id, film_url, image_url, image_alt];
             }
         }
     }
@@ -277,7 +288,8 @@ async function arrow_click_event(element, click, category_label, category_filter
                         'right',
                         right_arrow_id,
                         category_label,
-                        category_filter_number);
+                        category_filter_number,
+                        id_list);
                     // remove the no_arrow
                     lastElementChild.remove();
                 }
@@ -355,7 +367,8 @@ async function add_next_film_to_the_right(
             'left',
             left_arrow_id,
             category_label,
-            category_filter_number);
+            category_filter_number,
+            id_list);
         // remove the no_arrow
         firstElementChild.remove();
     }
