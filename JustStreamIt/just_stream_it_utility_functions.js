@@ -181,10 +181,10 @@ function seek_4_left_element_to_add(
     for (i in id_list) {
         if (id_list[i] === firstFilm.id) {
             let j = parseInt(i) - 1;
-            image_id +=  j;
+            image_id =  id_list[j];
             film_url = get_film_url(data_from_REST_API, j);
             image_url = get_film_image_url(data_from_REST_API, j);
-            image_alt += j;
+            image_alt += id_list[j].charAt(id_list[j].length - 1);
             return [image_id, film_url, image_url, image_alt];
         }
     }
@@ -210,10 +210,10 @@ async function seek_4_right_element_to_add(
                 let response = await fetch(url);
                 if (response.ok) {
                     let data = await response.json();
-                    image_id +=  j;
+                    image_id =  id_list[j];
                     let film_url = get_film_url(data, index);
                     let image_url = get_film_image_url(data, index);
-                    image_alt += j;
+                    image_alt += id_list[j].charAt(id_list[j].length - 1);
                     return [image_id, film_url, image_url, image_alt];
                 } else {
                     if (retry_counter > 0) {
@@ -270,12 +270,12 @@ async function arrow_click_event(element, click, category_label, category_filter
                 }
                 // Then, check if the right arrow shall be added
                 let max_index = id_list.length - 1;
-                let id = id_list[max_index];
-                if (lastElementChild != id) {
+                let right_arrow_id = id_list[max_index];
+                if (lastElementChild != right_arrow_id) {
                     add_arrow(
                         lastElementChild.parentNode,
                         'right',
-                        id,
+                        right_arrow_id,
                         category_label,
                         category_filter_number);
                     // remove the no_arrow
