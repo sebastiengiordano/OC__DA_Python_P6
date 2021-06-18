@@ -1,5 +1,5 @@
 // Functions to manage best movie section
-function manage_best_movie_section() {
+function manage_best_movie_section(retry_counter=2) {
     url = fetch_server_filter(...categories_filter[best_movie_categories_filter])
     fetch(url)
         .then(function (response) {
@@ -9,8 +9,11 @@ function manage_best_movie_section() {
             else {
                 retry_counter -= 1;
                 if (retry_counter > 0) {
-                    setTimeout(manage_best_movie_section, 500);
-                    }
+                    setTimeout(() => {
+                        manage_best_movie_section(retry_counter);
+                    },
+                    500);
+                }
             }
         })
         .then(function (data) {
@@ -43,7 +46,7 @@ function best_movie_section_update(data) {
 
 
 // Functions to manage best rating section
-function manage_best_rating_section() {
+function manage_best_rating_section(retry_counter=2) {
     url = fetch_server_filter(...categories_filter[best_rating_categories_filter]);
     fetch(url)
         .then(function (response) {
@@ -53,8 +56,11 @@ function manage_best_rating_section() {
             else {
                 retry_counter -= 1;
                 if (retry_counter > 0) {
-                    setTimeout(manage_best_rating_section, 500);
-                    }
+                    setTimeout(() => {
+                        manage_best_rating_section(retry_counter);
+                    },
+                    500);
+                }
             }
         })
         .then(function (data) {
@@ -98,23 +104,21 @@ function best_rating_add_event_on_arrow() {
 
 
 // Functions to manage style_1 section
-function manage_style_1_section() {
+function manage_style_1_section(retry_counter=2) {
     url = fetch_server_filter(...categories_filter[style_1_categories_filter]);
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('');
-                console.log('function manage_style_1_section: response OK');
                 return response.json();
             }
             else {
-                console.log('');
-                console.log('function manage_style_1_section');
-                console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
-                    setTimeout(manage_style_1_section, 500);
-                    }
+                    setTimeout(() => {
+                        manage_style_1_section(retry_counter);
+                    },
+                    500);
+                }
             }
         })
         .then(function (data) {
@@ -158,23 +162,21 @@ function style_1_add_event_on_arrow() {
 
 
 // Functions to manage style_2 section
-function manage_style_2_section() {
+function manage_style_2_section(retry_counter=2) {
     url = fetch_server_filter(...categories_filter[style_2_categories_filter]);
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('');
-                console.log('function manage_style_2_section: response OK');
                 return response.json();
             }
             else {
-                console.log('');
-                console.log('function manage_style_2_section');
-                console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
-                    setTimeout(manage_style_2_section, 500);
-                    }
+                    setTimeout(() => {
+                        manage_style_2_section(retry_counter);
+                    },
+                    500);
+                }
             }
         })
         .then(function (data) {
@@ -218,23 +220,21 @@ function style_2_add_event_on_arrow() {
 
 
 // Functions to manage style_3 section
-function manage_style_3_section() {
+function manage_style_3_section(retry_counter=2) {
     url = fetch_server_filter(...categories_filter[style_3_categories_filter]);
     fetch(url)
         .then(function (response) {
             if (response.ok) {
-                console.log('');
-                console.log('function manage_style_3_section: response OK');
                 return response.json();
             }
             else {
-                console.log('');
-                console.log('function manage_style_3_section');
-                console.error('Retour du serveur :', response.status);
                 retry_counter -= 1;
                 if (retry_counter > 0) {
-                    setTimeout(manage_style_3_section, 500);
-                    }
+                    setTimeout(() => {
+                        manage_style_3_section(retry_counter);
+                    },
+                    500);
+                }
             }
         })
         .then(function (data) {

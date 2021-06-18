@@ -244,74 +244,96 @@ async function arrow_click_event(element, click, category_label, category_filter
     let lastElementChild = element.lastElementChild;
     let lastFilm = lastElementChild.previousElementSibling;
 
-    url = fetch_server_filter(...categories_filter[category_filter_number])
-    fetch(url)
-        .then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            else {
-                retry_counter -= 1;
-                if (retry_counter > 0) {
-                    setTimeout(() => {
-                        arrow_click_event(element, click, category_label, category_filter_number, id_list);
-                    },
-                    500);
+    if (multi_click_block) {
+        // A event click is still in progress, do nothing
+        return;
+    } else {
+        multi_click_block = true;
+
+        url = fetch_server_filter(...categories_filter[category_filter_number])
+        fetch(url)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
                 }
-            }
-        })
-        .then(function (data) {
-            if (click === 'left') {
-                // Add the previous film to the left
-                firstFilm = firstElementChild.nextElementSibling;
-                [image_id, film_url, image_url, image_alt] = seek_4_left_element_to_add(
-                    firstFilm,
-                    data,
-                    id_list,
-                    category_label[0],
-                    category_label[1]);
-                let newImage = add_image_after(firstElementChild, image_id, image_url, image_alt);
-                add_event_on_film(newImage, film_url);
-                // Check if there is no previous film,
-                // in order to remove left arrow
-                if (image_id === id_list[1]) {
-                    add_no_arrow(firstElementChild.parentNode, 'left');
-                    firstElementChild.remove();
+                else {
+                    retry_counter -= 1;
+                    if (retry_counter > 0) {
+                        setTimeout(() => {
+                            multi_click_block = false;
+                            arrow_click_event(element, click, category_label, category_filter_number, id_list);
+                        },
+                        500);
+                    }
+                    else {
+                        // multi click protection could be turn off 
+                        multi_click_block_update(false);
+                    }
                 }
-                // Then, check if the right arrow shall be added
-                let max_index = id_list.length - 1;
-                let right_arrow_id = id_list[max_index];
-                if (lastElementChild != right_arrow_id) {
-                    add_arrow(
-                        lastElementChild.parentNode,
-                        'right',
-                        right_arrow_id,
+            })
+            .then(function (data) {
+                if (click === 'left') {
+                    // Add the previous film to the left
+                    firstFilm = firstElementChild.nextElementSibling;
+                    [image_id, film_url, image_url, image_alt] = seek_4_left_element_to_add(
+                        firstFilm,
+                        data,
+                        id_list,
+                        category_label[0],
+                        category_label[1]);
+                    let newImage = add_image_after(firstElementChild, image_id, image_url, image_alt);
+                    add_event_on_film(newImage, film_url);
+                    // Check if there is no previous film,
+                    // in order to remove left arrow
+                    if (image_id === id_list[1]) {
+                        add_no_arrow(firstElementChild.parentNode, 'left');
+                        firstElementChild.remove();
+                    }
+                    // Then, check if the right arrow shall be added
+                    let max_index = id_list.length - 1;
+                    let right_arrow_id = id_list[max_index];
+                    if (lastElementChild != right_arrow_id) {
+                        add_arrow(
+                            lastElementChild.parentNode,
+                            'right',
+                            right_arrow_id,
+                            category_label,
+                            category_filter_number,
+                            id_list);
+                        // remove the no_arrow
+                        lastElementChild.remove();
+                    }
+                    // Removed the last film
+                    lastFilm.remove();
+                } else {
+                    // Add the next film to the right
+                    add_next_film_to_the_right(
+                        firstElementChild,
+                        firstFilm,
+                        lastElementChild,
+                        lastFilm,
+                        data,
+                        id_list,
                         category_label,
-                        category_filter_number,
-                        id_list);
-                    // remove the no_arrow
-                    lastElementChild.remove();
+                        category_filter_number);
                 }
-                // Removed the last film
-                lastFilm.remove();
-            } else {
-                // Add the next film to the right
-                add_next_film_to_the_right(
-                    firstElementChild,
-                    firstFilm,
-                    lastElementChild,
-                    lastFilm,
-                    data,
-                    id_list,
-                    category_label,
-                    category_filter_number);
-            }
-        })
-        .catch(function(error) {
-            console.log('')
-            console.log('function arrow_click_event: catch error')
-            console.log(error)
-        })
+                // multi click protection could be turn off 
+                setTimeout(() => {
+                    multi_click_block_update(false);
+                },
+                200);
+            })
+            .catch(function(error) {
+                console.log('')
+                console.log('function arrow_click_event: catch error')
+                console.log(error)
+                // multi click protection could be turn off
+                setTimeout(() => {
+                    multi_click_block_update(false);
+                },
+                200);
+            })
+    }
 }
 
 async function add_next_film_to_the_right(
@@ -323,7 +345,7 @@ async function add_next_film_to_the_right(
         id_list,
         category_label,
         category_filter_number,
-        retry_counter=10) {
+        retry_counter=2) {
     const retry = () => {add_next_film_to_the_right(
         firstElementChild,
         firstFilm,
@@ -389,6 +411,10 @@ function add_event_on_arrow(
     });
 }
 
+function multi_click_block_update(state){
+        multi_click_block = state;
+}
+
 // Funcions used to get information from
 // data come from OCMovies-API-EN-FR API
 function get_film_url(data, position) {
@@ -445,7 +471,7 @@ async function get_film_information(data, position, retry, retry_counter) {
     }
 }
 
-async function get_film_information_from_url(url, retry, retry_counter) {
+async function get_film_information_from_url(url) {
     let response = await fetch(url);
     if (response.ok) {
         let response_json = await response.json();
@@ -474,9 +500,5 @@ async function get_film_information_from_url(url, retry, retry_counter) {
             countries,
             budget,
             long_description);
-    } else {
-        if (retry_counter > 0) {
-            setTimeout(retry, 500);
-        }
-    }
+    } 
 }

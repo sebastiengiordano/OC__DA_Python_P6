@@ -15,11 +15,11 @@ function add_event_on_film(
     });
 }
 
-async function modal_click_event(url, retry_counter=10) {
+async function modal_click_event(url, retry_counter=2) {
     const retry = () => {
         modal_click_event(url, retry_counter-=1);
     }
-    let film_information = await get_film_information_from_url(url, retry, retry_counter);
+    let film_information = await get_film_information_from_url(url);
     show_modal(film_information);
 }
 

@@ -101,3 +101,6 @@ let month_name = [
     'Novenbre',
     'Décembre',
 ]
+
+// Global variable to avoid multi click on arrow before page refresh
+let multi_click_block = false;
