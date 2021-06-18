@@ -46,14 +46,12 @@ body {
     color: bisque;
     min-height: 100vh;
     min-width: 1000px;
-    _width: expression( document.body.clientWidth > 1000 ? "1000px" : "auto" );
+    width: expression(document.body.clientWidth > 1000 ? "1000px" : "auto" );
 }
 
 #bloc_page {
     min-height: 100vh;
     position: relative;
-    /* Equal to height of footer */
-    padding-bottom: 50px;
 }
 
 h1 {
@@ -61,7 +59,6 @@ h1 {
     font-size: 4em;
     font-family: 'BallparkWeiner', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     justify-content: center;
-    padding-top: 20px;
 }
 
 
@@ -173,7 +170,7 @@ nav a:hover {
     width: 99.5%;
     min-height: 200px;
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 90px;
     color: white;
     font-size: 0.8em;
     min-height: 21em;
@@ -240,7 +237,7 @@ footer {
     outline: 0;
     min-width: 600px;
     max-width: 45em;
-    margin-bottom: 15em;
+    margin-bottom: 8em;
     overflow-y : auto;
 }
 

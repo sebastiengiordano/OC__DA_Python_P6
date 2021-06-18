@@ -17,9 +17,14 @@ let categories_filter = [
     ["sort_by=-imdb_score"],
     ["min_year=1970", "max_year=1980", "sort_by=-imdb_score", "actor=Diane+Keaton"],
     ['genre=Fantasy', "sort_by=-imdb_score"],
-    ['director=Christopher+Nolan'],
+    ['director=Christopher+Nolan', "sort_by=year"],
 ];
-
+// Defined the index of the categories filter by category
+let best_movie_categories_filter = 0;
+let best_rating_categories_filter =0;
+let style_1_categories_filter = 1;
+let style_2_categories_filter = 2;
+let style_3_categories_filter = 3;
 
 /*********************************/
 /*  Number of films by category  */

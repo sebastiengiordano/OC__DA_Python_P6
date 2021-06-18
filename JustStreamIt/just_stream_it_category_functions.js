@@ -1,6 +1,6 @@
 // Functions to manage best movie section
 function manage_best_movie_section() {
-    url = fetch_server_filter(...categories_filter[0])
+    url = fetch_server_filter(...categories_filter[best_movie_categories_filter])
     fetch(url)
         .then(function (response) {
             if (response.ok) {
@@ -44,7 +44,7 @@ function best_movie_section_update(data) {
 
 // Functions to manage best rating section
 function manage_best_rating_section() {
-    url = fetch_server_filter(...categories_filter[0]);
+    url = fetch_server_filter(...categories_filter[best_rating_categories_filter]);
     fetch(url)
         .then(function (response) {
             if (response.ok) {
@@ -92,14 +92,14 @@ function best_rating_add_event_on_arrow() {
         best_rating,
         'right',
         best_rating_labels,
-        0,
+        best_rating_categories_filter,
         best_rating_id_list);
 }
 
 
 // Functions to manage style_1 section
 function manage_style_1_section() {
-    url = fetch_server_filter(...categories_filter[1]);
+    url = fetch_server_filter(...categories_filter[style_1_categories_filter]);
     fetch(url)
         .then(function (response) {
             if (response.ok) {
@@ -152,6 +152,126 @@ function style_1_add_event_on_arrow() {
         style_1,
         'right',
         style_1_labels,
-        1,
+        style_1_categories_filter,
         style_1_id_list);
+}
+
+
+// Functions to manage style_2 section
+function manage_style_2_section() {
+    url = fetch_server_filter(...categories_filter[style_2_categories_filter]);
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                console.log('');
+                console.log('function manage_style_2_section: response OK');
+                return response.json();
+            }
+            else {
+                console.log('');
+                console.log('function manage_style_2_section');
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(manage_style_2_section, 500);
+                    }
+            }
+        })
+        .then(function (data) {
+            style_2_section_update(data);
+        })
+        .catch(function(error) {
+            console.log('');
+            console.log('function manage_style_2_section: catch error');
+            console.log(error);
+        })
+}
+
+function style_2_section_update(data) {
+    let child = style_2.firstElementChild;
+    for (let i=0; i<4;i++) {
+        href = get_imdb_url(data, i);
+        image_id = style_2_labels[0] + i;
+        film_url = get_film_url(data, i);
+        image_url = get_film_image_url(data, i);
+        image_alt = style_2_labels[1] + i;
+        child = add_image_after(
+            child,
+            image_id,
+            image_url,
+            image_alt);
+        add_event_on_film(child, film_url);
+    }
+}
+
+function style_2_add_event_on_arrow() {
+    let max_index = style_2_id_list.length - 1;
+    let arrow = document.getElementById(style_2_id_list[max_index]);
+    add_event_on_arrow(
+        arrow,
+        style_2,
+        'right',
+        style_2_labels,
+        style_2_categories_filter,
+        style_2_id_list);
+}
+
+
+// Functions to manage style_3 section
+function manage_style_3_section() {
+    url = fetch_server_filter(...categories_filter[style_3_categories_filter]);
+    fetch(url)
+        .then(function (response) {
+            if (response.ok) {
+                console.log('');
+                console.log('function manage_style_3_section: response OK');
+                return response.json();
+            }
+            else {
+                console.log('');
+                console.log('function manage_style_3_section');
+                console.error('Retour du serveur :', response.status);
+                retry_counter -= 1;
+                if (retry_counter > 0) {
+                    setTimeout(manage_style_3_section, 500);
+                    }
+            }
+        })
+        .then(function (data) {
+            style_3_section_update(data);
+        })
+        .catch(function(error) {
+            console.log('');
+            console.log('function manage_style_3_section: catch error');
+            console.log(error);
+        })
+}
+
+function style_3_section_update(data) {
+    let child = style_3.firstElementChild;
+    for (let i=0; i<4;i++) {
+        href = get_imdb_url(data, i);
+        image_id = style_3_labels[0] + i;
+        film_url = get_film_url(data, i);
+        image_url = get_film_image_url(data, i);
+        image_alt = style_3_labels[1] + i;
+        child = add_image_after(
+            child,
+            image_id,
+            image_url,
+            image_alt);
+        add_event_on_film(child, film_url);
+    }
+}
+
+function style_3_add_event_on_arrow() {
+    let max_index = style_3_id_list.length - 1;
+    let arrow = document.getElementById(style_3_id_list[max_index]);
+    add_event_on_arrow(
+        arrow,
+        style_3,
+        'right',
+        style_3_labels,
+        style_3_categories_filter,
+        style_3_id_list);
 }

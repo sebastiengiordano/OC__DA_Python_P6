@@ -28,7 +28,7 @@ function add_image_after(after, id, image_url, image_alt) {
     after.after(newDiv);
     return newDiv;
 }
-/*
+
 function add_image_before(before, id, image_url, image_alt) {
     // Create image element
     let newImg = document.createElement('img');
@@ -42,7 +42,6 @@ function add_image_before(before, id, image_url, image_alt) {
     before.parentNode.insertBefore(newDiv, before);
     return newDiv;
 }
-*/
 
 
 // Function used to add a new text inside an element

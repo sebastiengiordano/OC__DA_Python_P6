@@ -12,4 +12,8 @@ best_rating_add_event_on_arrow();
 manage_style_1_section();
 style_1_add_event_on_arrow();
 //* style_2 */
+manage_style_2_section();
+style_2_add_event_on_arrow();
 //* style_3 */
+manage_style_3_section();
+style_3_add_event_on_arrow();
