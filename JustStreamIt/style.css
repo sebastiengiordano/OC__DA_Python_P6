@@ -27,7 +27,6 @@
     src: url('font/KaushanScript-Regular.otf') format('embedded-opentype');
     font-weight: normal;
     font-style: normal;
-    font-size: x-large;
 }
 
 /********/
@@ -46,7 +45,6 @@ body {
     color: bisque;
     min-height: 100vh;
     min-width: 1000px;
-    width: expression(document.body.clientWidth > 1000 ? "1000px" : "auto" );
 }
 
 #bloc_page {
